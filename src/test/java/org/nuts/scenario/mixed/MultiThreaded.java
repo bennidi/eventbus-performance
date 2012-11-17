@@ -16,11 +16,10 @@ import org.nuts.base.PerformanceTest;
 */
 public class MultiThreaded extends PerformanceTest {
 
-    final int loopCount = 300;
+    final int loopCount = 500;
 
-    final int numberOfThreads = 20;
+    final int numberOfThreads = 50;
 
-    // NOT WORKING: EventBus produces out of memory exceptions
     @Test
     public void testEventbusMultiThreaded() {
         ConcurrentExecutor executor = new ConcurrentExecutor(statistics,
@@ -40,7 +39,7 @@ public class MultiThreaded extends PerformanceTest {
                         .setProperty("Scenario", "MixedMT"));
         executor.runConcurrent(
                 TestScenarios.Mixed(new IEventBus.SimpleBusAdapter(), loopCount), numberOfThreads);
-
+        calculateSimpleBusTimeToAdd();
     }
 
 

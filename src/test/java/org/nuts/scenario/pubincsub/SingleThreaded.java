@@ -51,7 +51,7 @@ public class SingleThreaded extends PerformanceTest{
                         .setProperty("Scenario", "PubSubST"));
         executor.runConcurrent(
                 TestScenarios.PublishWithSubclasses(new IEventBus.SimpleBusAdapter(), loopCount, numberOfBeans));
-
+        calculateSimpleBusTimeToAdd();
     }
 
     @Test

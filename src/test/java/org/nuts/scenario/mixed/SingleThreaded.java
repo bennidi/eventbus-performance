@@ -49,7 +49,7 @@ public class SingleThreaded extends PerformanceTest {
                         .setProperty("Scenario", "MixedST"));
         executor.runConcurrent(
                 TestScenarios.Mixed(new IEventBus.SimpleBusAdapter(), loopCount));
-
+        calculateSimpleBusTimeToAdd();
     }
 
     @Test

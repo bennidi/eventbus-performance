@@ -20,7 +20,7 @@ public class MultiThreaded  extends PerformanceTest {
 
     final int numberOfThreads = 20;
 
-    final int numberOfBeans = 6000;
+    final int numberOfBeans = 2000;
 
     @Test
     public void testEventbusMultiThreaded() {
@@ -41,7 +41,7 @@ public class MultiThreaded  extends PerformanceTest {
                         .setProperty("Scenario", "PubNoSubMT"));
         executor.runConcurrent(
                 TestScenarios.PublishNoSubclasses(new IEventBus.SimpleBusAdapter(), loopCount, numberOfBeans), numberOfThreads);
-
+        calculateSimpleBusTimeToAdd();
     }
 
 

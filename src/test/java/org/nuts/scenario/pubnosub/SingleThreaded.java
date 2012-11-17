@@ -1,5 +1,6 @@
 package org.nuts.scenario.pubnosub;
 
+import com.adamtaft.eb.EventBusService;
 import org.junit.Test;
 import org.nuts.IEventBus;
 import org.nuts.TestScenarios;
@@ -52,6 +53,7 @@ public class SingleThreaded  extends PerformanceTest {
         executor.runConcurrent(
                 TestScenarios.PublishNoSubclasses(new IEventBus.SimpleBusAdapter(), loopCount, numberOfBeans));
 
+        calculateSimpleBusTimeToAdd();
     }
 
     @Test

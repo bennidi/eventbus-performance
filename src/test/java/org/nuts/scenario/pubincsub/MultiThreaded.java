@@ -42,7 +42,7 @@ public class MultiThreaded extends PerformanceTest{
                         .setProperty("Scenario", "PubSubMT"));
         executor.runConcurrent(
                 TestScenarios.PublishWithSubclasses(new IEventBus.SimpleBusAdapter(), loopCount, numberOfBeans), numberOfThreads);
-
+        calculateSimpleBusTimeToAdd();
     }
 
 
