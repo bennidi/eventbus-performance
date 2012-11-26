@@ -50,7 +50,7 @@
         <dependency>
             <groupId>org.mbassy</groupId>
             <artifactId>mbassador</artifactId>
-            <version>1.0.0.RC</version>
+            <version>1.0.1.RC</version>
         </dependency>
 
         <dependency>

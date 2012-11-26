@@ -20,7 +20,7 @@ public class SubTestEventListener {
     @Subscribe
     @EventHandler
     @EventSubscriber
-    public void handleTestEvent(TestEvent event) {
+    public void handleTestEvent(SubTestEvent event) {
         event.countHandled();
     }
 
