@@ -2,6 +2,7 @@ package org.nuts;
 
 import com.adamtaft.eb.EventBusService;
 import org.bushe.swing.event.annotation.AnnotationProcessor;
+import org.mbassy.BusConfiguration;
 import org.mbassy.MBassador;
 
 /**
@@ -43,7 +44,7 @@ public interface IEventBus {
 
     public class MbassadorAdapter implements IEventBus {
 
-        private MBassador delegate = new MBassador();
+        private MBassador delegate = new MBassador(BusConfiguration.Default());
 
         @Override
         public void publish(Object event) {
