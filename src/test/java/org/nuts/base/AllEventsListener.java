@@ -3,7 +3,7 @@ package org.nuts.base;
 import com.adamtaft.eb.EventHandler;
 import com.google.common.eventbus.Subscribe;
 import org.bushe.swing.event.annotation.EventSubscriber;
-import org.mbassy.listener.Listener;
+import net.engio.mbassy.listener.Listener;
 
 /**
 * Created with IntelliJ IDEA.

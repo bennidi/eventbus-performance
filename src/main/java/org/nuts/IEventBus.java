@@ -2,8 +2,8 @@ package org.nuts;
 
 import com.adamtaft.eb.EventBusService;
 import org.bushe.swing.event.annotation.AnnotationProcessor;
-import org.mbassy.BusConfiguration;
-import org.mbassy.MBassador;
+import net.engio.mbassy.BusConfiguration;
+import net.engio.mbassy.MBassador;
 
 /**
  * Created with IntelliJ IDEA.
