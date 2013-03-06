@@ -16,10 +16,12 @@ import org.nuts.base.PerformanceTest;
 */
 public class MultiThreaded  extends PerformanceTest {
 
+    // loopCount = number of events
     final int loopCount = 100;
 
     final int numberOfThreads = 20;
 
+    // numberOfBeans * 3 = number of listeners
     final int numberOfBeans = 2000;
 
     @Test

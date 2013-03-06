@@ -3,20 +3,16 @@ package org.nuts.base;
 import com.adamtaft.eb.EventHandler;
 import com.google.common.eventbus.Subscribe;
 import org.bushe.swing.event.annotation.EventSubscriber;
-import net.engio.mbassy.listener.Listener;
+import net.engio.mbassy.listener.Handler;
 
 /**
-* Created with IntelliJ IDEA.
-* User: benni
-* Date: 11/3/12
-* Time: 5:25 PM
-* To change this template use File | Settings | File Templates.
+* Simple handler for SubTestEvent
 */
 public class SubTestEventListener {
 
     // every event of type TestEvent or any subtype will be delivered
     // to this listener
-    @Listener
+    @Handler
     @Subscribe
     @EventHandler
     @EventSubscriber

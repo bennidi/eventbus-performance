@@ -3,7 +3,7 @@ package org.nuts.base;
 import com.adamtaft.eb.EventHandler;
 import com.google.common.eventbus.Subscribe;
 import org.bushe.swing.event.annotation.EventSubscriber;
-import net.engio.mbassy.listener.Listener;
+import net.engio.mbassy.listener.Handler;
 
 /**
 * Created with IntelliJ IDEA.
@@ -16,7 +16,7 @@ public class TestEventListener {
 
     // every event of type TestEvent or any subtype will be delivered
     // to this listener
-    @Listener
+    @Handler
     @Subscribe
     @EventHandler
     @EventSubscriber

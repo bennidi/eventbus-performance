@@ -16,7 +16,8 @@ import org.nuts.base.PerformanceTest;
 */
 public class MultiThreaded  extends PerformanceTest {
 
-    final int loopCount = 300;
+    // loopCount * 3 = subscriptions per thread
+    final int loopCount = 100;
 
     final int numberOfThreads = 20;
 

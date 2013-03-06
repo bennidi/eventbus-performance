@@ -16,7 +16,9 @@ import org.nuts.base.PerformanceTest;
  */
 public class SingleThreaded extends PerformanceTest {
 
-    final int loopCount = 4000;
+    // loopCount * 3 = subscriptions per thread
+    // loopCount * 2 = events per thread
+    final int loopCount = 2000;
 
     @Test
     public void testMBassadorSingleThreaded() {

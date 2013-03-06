@@ -17,8 +17,10 @@ import org.nuts.base.PerformanceTest;
 */
 public class SingleThreaded  extends PerformanceTest {
 
+    // loopCount = number of events
     final int loopCount = 2000;
 
+    // numberOfBeans * 3 = number of listeners
     final int numberOfBeans = 2000;
 
     @Test

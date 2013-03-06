@@ -16,9 +16,11 @@ import org.nuts.base.PerformanceTest;
 */
 public class MultiThreaded extends PerformanceTest {
 
-    final int loopCount = 500;
+    // loopCount * 3 = subscriptions per thread
+    // loopCount * 2 = events per thread
+    final int loopCount = 100;
 
-    final int numberOfThreads = 50;
+    final int numberOfThreads = 20;
 
     @Test
     public void testEventbusMultiThreaded() {
