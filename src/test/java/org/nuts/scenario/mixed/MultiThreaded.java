@@ -18,9 +18,9 @@ public class MultiThreaded extends PerformanceTest {
 
     // loopCount * 3 = subscriptions per thread
     // loopCount * 2 = events per thread
-    final int loopCount = 100;
+    final int loopCount = 1000;
 
-    final int numberOfThreads = 20;
+    final int numberOfThreads = 30;
 
     @Test
     public void testEventbusMultiThreaded() {

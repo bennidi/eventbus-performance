@@ -18,7 +18,7 @@ public class SingleThreaded extends PerformanceTest {
 
     // loopCount * 3 = subscriptions per thread
     // loopCount * 2 = events per thread
-    final int loopCount = 2000;
+    final int loopCount = 20000;
 
     @Test
     public void testMBassadorSingleThreaded() {
