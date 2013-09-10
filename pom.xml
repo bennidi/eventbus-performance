@@ -42,9 +42,9 @@
         </dependency>
 
         <dependency>
-            <groupId>event.bus</groupId>
+            <groupId>com.google.code</groupId>
             <artifactId>simplebus</artifactId>
-            <version>1.0</version>
+            <version>1.2</version>
         </dependency>
 
         <dependency>
@@ -58,6 +58,13 @@
             <artifactId>eventbus</artifactId>
             <version>1.4</version>
         </dependency>
+
+        <dependency>
+            <groupId>com.mycila</groupId>
+            <artifactId>mycila-event</artifactId>
+            <version>4.2.ga</version>
+        </dependency>
+
 
     </dependencies>
 

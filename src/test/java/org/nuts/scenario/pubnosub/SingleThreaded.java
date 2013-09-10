@@ -2,7 +2,7 @@ package org.nuts.scenario.pubnosub;
 
 import com.adamtaft.eb.EventBusService;
 import org.junit.Test;
-import org.nuts.IEventBus;
+import org.nuts.base.IEventBus;
 import org.nuts.TestScenarios;
 import org.nuts.base.ConcurrentExecutor;
 import org.nuts.base.ExecutionContext;

@@ -1,6 +1,10 @@
-package org.nuts;
+package org.nuts.base;
 
 import com.adamtaft.eb.EventBusService;
+import com.mycila.event.Dispatcher;
+import com.mycila.event.Dispatchers;
+import com.mycila.event.Topic;
+import com.mycila.event.Topics;
 import org.bushe.swing.event.annotation.AnnotationProcessor;
 import net.engio.mbassy.bus.BusConfiguration;
 import net.engio.mbassy.bus.MBassador;
@@ -62,6 +66,7 @@ public interface IEventBus {
         }
     }
 
+
     public class SimpleBusAdapter implements IEventBus {
 
         @Override
@@ -96,6 +101,27 @@ public interface IEventBus {
         @Override
         public void unsubscribe(Object listener) {
             AnnotationProcessor.unprocess(listener);
+        }
+    }
+
+    public class MycilaAdapter implements IEventBus {
+
+        private Dispatcher bus = Dispatchers.synchronousSafe();
+
+        @Override
+        public void publish(Object event) {
+            bus.publish(Topic.topic("any"), event);
+        }
+
+        @Override
+        public void subscribe(Object listener){
+            bus.subscribe(Topics.any(),SubTestEvent.class, AllEventsListener.Mycila.subTestEventSubscriber());
+            bus.subscribe(Topics.any(),TestEvent.class, AllEventsListener.Mycila.testEventSubscriber());
+        }
+
+        @Override
+        public void unsubscribe(Object listener) {
+
         }
     }
 

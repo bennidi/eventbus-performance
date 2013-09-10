@@ -1,5 +1,7 @@
 # idea project settings #
 *.iml
+.idea/**/*
+.idea/
 
 # Package Files #
 *.jar

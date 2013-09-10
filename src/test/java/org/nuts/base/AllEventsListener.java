@@ -2,12 +2,12 @@ package org.nuts.base;
 
 import com.adamtaft.eb.EventHandler;
 import com.google.common.eventbus.Subscribe;
-import net.engio.mbassy.dispatch.HandlerInvocation;
+import com.mycila.event.Event;
+import com.mycila.event.Subscriber;
+import net.engio.mbassy.listener.Handler;
 import net.engio.mbassy.listener.Listener;
 import net.engio.mbassy.listener.References;
-import net.engio.mbassy.subscription.SubscriptionContext;
 import org.bushe.swing.event.annotation.EventSubscriber;
-import net.engio.mbassy.listener.Handler;
 
 /**
 * Created with IntelliJ IDEA.
@@ -37,32 +37,42 @@ public class AllEventsListener {
         event.countHandled();
     }
 
-    public static class HandleTestEvent extends HandlerInvocation<AllEventsListener,TestEvent> {
 
 
-        public HandleTestEvent(SubscriptionContext context) {
-            super(context);
+    static class Mycila{
+
+        public static Subscriber<TestEvent> testEventSubscriber(){
+            return new Subscriber<TestEvent>() {
+                @Override
+                public void onEvent(Event<TestEvent> testEventEvent) throws Exception {
+                    testEventEvent.getSource().countHandled();
+                }
+            };
         }
 
-        @Override
-        public void invoke(final AllEventsListener listener, final TestEvent message) {
-            listener.handleTestEvent(message);
+        public static Subscriber<SubTestEvent> subTestEventSubscriber(){
+            return new Subscriber<SubTestEvent>() {
+                @Override
+                public void onEvent(Event<SubTestEvent> testEventEvent) throws Exception {
+                    testEventEvent.getSource().countHandled();
+                }
+            };
         }
+
+
+        // analogous to
+
+        @com.mycila.event.annotation.Subscribe(topics = "all", eventType = TestEvent.class)
+        public void handleTestEvent(Event<TestEvent> event) {
+            event.getSource().countHandled();
+        }
+
+        @com.mycila.event.annotation.Subscribe(topics = "all", eventType = SubTestEvent.class)
+        public void handleSubTestEvent(Event<SubTestEvent> event) {
+            event.getSource().countHandled();
+        }
+
     }
-
-    public static class HandleSubTestEvent extends HandlerInvocation<AllEventsListener,SubTestEvent>{
-
-
-        public HandleSubTestEvent(SubscriptionContext context) {
-            super(context);
-        }
-
-        @Override
-        public void invoke(final AllEventsListener listener, final SubTestEvent message) {
-            listener.handleSubTestEvent(message);
-        }
-    }
-
 
 
 }

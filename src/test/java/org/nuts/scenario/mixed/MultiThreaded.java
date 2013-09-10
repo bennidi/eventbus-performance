@@ -1,7 +1,7 @@
 package org.nuts.scenario.mixed;
 
 import org.junit.Test;
-import org.nuts.IEventBus;
+import org.nuts.base.IEventBus;
 import org.nuts.TestScenarios;
 import org.nuts.base.ConcurrentExecutor;
 import org.nuts.base.ExecutionContext;
@@ -20,7 +20,7 @@ public class MultiThreaded extends PerformanceTest {
     // loopCount * 2 = events per thread
     final int loopCount = 500;
 
-    final int numberOfThreads = 50;
+    final int numberOfThreads = 20;
 
     @Test
     public void testEventbusMultiThreaded() {
@@ -42,6 +42,16 @@ public class MultiThreaded extends PerformanceTest {
         executor.runConcurrent(
                 TestScenarios.Mixed(new IEventBus.SimpleBusAdapter(), loopCount), numberOfThreads);
         calculateSimpleBusTimeToAdd();
+    }
+
+    @Test
+    public void testMycilaMultiThreaded() {
+        ConcurrentExecutor executor = new ConcurrentExecutor(statistics,
+                new ExecutionContext()
+                        .setProperty("Bus", "Mycila")
+                        .setProperty("Scenario", "MixedMT"));
+        executor.runConcurrent(
+                TestScenarios.Mixed(new IEventBus.MycilaAdapter(), loopCount), numberOfThreads);
     }
 
 
