@@ -1,11 +1,17 @@
 eventbus-performance
 ====================
 
-This is a benchmark of some major (intra VM) event bus implementations for Java. The benchmark is based on [[lab]] and [[pips]]. Each benchmark is defined oblivious of the actual eventbus implementation that is being benchmarks, i.e. the results are comparable without any restrictions. The results can be found in the projects "result" folder. The code is in "src" (surprise!).
+This is a benchmark of some major (intra VM) event bus implementations for Java. The benchmark is based on [[lab]] and [[pips]].
+Each benchmark is defined oblivious of the actual eventbus implementation that is being benchmarks, i.e. the results are comparable
+without any restrictions. The results can be found in the projects "result" folder, the code is in "src" (surprise!).
 
-After the initial implementation of some benchmark code that simply collected the overall execution times, I found the time to write a more elaborate benchmarking library that allows a somewhat declarative configuration of workloads that are subsequently executed by various executor services to provide high very high concurrency as normally found in, for example, web servers, servlet containers or application servers.
+After the initial implementation of some benchmark code that simply collected the overall execution times,
+I found the time to write a more elaborate benchmarking library that allows a somewhat declarative configuration of
+workloads that are subsequently executed by various executor services to provide high very high concurrency as normally found in,
+for example, web servers, servlet containers or application servers.
 
-There is a blog post comparing different event bus implementations and showing some of the benchmark results of the old code (which can be found in "src/old" (<-surprise)
+There is a blog post comparing different event bus implementations and showing some of the benchmark results of the old code
+(which can be found in "src/old" (<-surprise)
 
 
 # Benchmarks
