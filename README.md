@@ -47,11 +47,12 @@ There is a blog post comparing different event bus implementations and showing s
 | Mbassador | ~1750 ms | ~3500 ms  | ~5 ms  | ~3 ms |
 | Guava     | ~7000 ms | ~14000 ms | ~27 ms | ~30 ms |
 
-Publication TestEvent: Deliver 1000 (batch size) messages (TestEvent) to 2000 handlers
-Publication TestEvent: Deliver 1000 (batch size) messages (SubTestEvent) to 4000 handlers
-Subscription: Subscribe 200 (1/5 batch size) listeners
-Unsubscription: Unsubscribe 200 (1/5 batch size) listeners
++ *Publication TestEvent*: Deliver 1000 (batch size) messages (TestEvent) to 2000 handlers
++ *Publication TestEvent*: Deliver 1000 (batch size) messages (SubTestEvent) to 4000 handlers
++ *Subscription*: Subscribe 200 (1/5 batch size) listeners
++ *Unsubscription*: Unsubscribe 200 (1/5 batch size) listeners
 
+![Chart of execution times for mbassador](/results/ReadWriteHighConcurrency/mbassador/chart.jpg?raw=true )
 ![Chart of execution times for Guava](/results/ReadWriteHighConcurrency/guava/chart.jpg?raw=true )
 
 ## Read Write Low Concurrency
