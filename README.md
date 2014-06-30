@@ -52,7 +52,7 @@ Publication TestEvent: Deliver 1000 (batch size) messages (SubTestEvent) to 4000
 Subscription: Subscribe 200 (1/5 batch size) listeners
 Unsubscription: Unsubscribe 200 (1/5 batch size) listeners
 
-![Chart of execution times for Guava](results/ReadWriteHighConcurrency/guava/chart.jpg)
+![Chart of execution times for Guava](/results/ReadWriteHighConcurrency/guava/chart.jpg?raw=true )
 
 ## Read Write Low Concurrency
 
