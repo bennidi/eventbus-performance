@@ -2,11 +2,11 @@ eventbus-performance
 ====================
 
 This is a benchmark of some major event bus implementations for Java. The benchmark is based on
-[lab|https://github.com/bennidi/lab] and [pips|https://github.com/bennidi/pips].
+[[lab|https://github.com/bennidi/lab]] and [[pips|https://github.com/bennidi/pips]].
 Each benchmark is defined oblivious of the actual eventbus implementation that is being benchmarks, i.e. the results are comparable
 without any restrictions. The results can be found in the projects `result` folder, the code is in `src` (surprise!).
 
-I wrote this blog [post|http://codeblock.engio.net/37/] comparing different event bus implementations and showing some of the
+I wrote this blog [[post|http://codeblock.engio.net/37/]] comparing different event bus implementations and showing some of the
 results of the old performance benchmark (which can be found in `src/old` (<-surprise)). The new benchmarks do not yet include the formerly
 benchmarked implementations. I would enjoy seeing other people create and add benchmarks of other bus implementations.
 
