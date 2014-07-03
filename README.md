@@ -1,17 +1,14 @@
 eventbus-performance
 ====================
 
-This is a benchmark of some major (intra VM) event bus implementations for Java. The benchmark is based on [[lab]] and [[pips]].
+This is a benchmark of some major event bus implementations for Java. The benchmark is based on
+[lab|https://github.com/bennidi/lab] and [pips|https://github.com/bennidi/pips].
 Each benchmark is defined oblivious of the actual eventbus implementation that is being benchmarks, i.e. the results are comparable
-without any restrictions. The results can be found in the projects "result" folder, the code is in "src" (surprise!).
+without any restrictions. The results can be found in the projects `result` folder, the code is in `src` (surprise!).
 
-After the initial implementation of some benchmark code that simply collected the overall execution times,
-I found the time to write a more elaborate benchmarking library that allows a somewhat declarative configuration of
-workloads that are subsequently executed by various executor services to provide high very high concurrency as normally found in,
-for example, web servers, servlet containers or application servers.
-
-There is a blog post comparing different event bus implementations and showing some of the benchmark results of the old code
-(which can be found in "src/old" (<-surprise)
+I wrote this blog [post|http://codeblock.engio.net/37/] comparing different event bus implementations and showing some of the
+results of the old performance benchmark (which can be found in `src/old` (<-surprise)). The new benchmarks do not yet include the formerly
+benchmarked implementations. I would enjoy seeing other people create and add benchmarks of other bus implementations
 
 
 # Benchmarks
@@ -42,6 +39,9 @@ There is a blog post comparing different event bus implementations and showing s
   + Number of Subscriber threads:3
 
 
+![Chart of execution times for mbassador](/results/ReadWriteHighConcurrency/mbassador/chart.jpg?raw=true , "mbassador")
+![Chart of execution times for Guava](/results/ReadWriteHighConcurrency/guava/chart.jpg?raw=true, "guava")
+
 | Event Bus | Publication TestEvent | Publication SubTestEvent | Subscription | Unsubscription |
 | ------------- |:-------------:|:-----:|:-----:|:-----:|
 | Mbassador | ~1750 ms | ~3500 ms  | ~5 ms  | ~3 ms |
@@ -52,8 +52,7 @@ There is a blog post comparing different event bus implementations and showing s
 + *Subscription*: Subscribe 200 (1/5 batch size) listeners
 + *Unsubscription*: Unsubscribe 200 (1/5 batch size) listeners
 
-![Chart of execution times for mbassador](/results/ReadWriteHighConcurrency/mbassador/chart.jpg?raw=true )
-![Chart of execution times for Guava](/results/ReadWriteHighConcurrency/guava/chart.jpg?raw=true )
+
 
 ## Read Write Low Concurrency
 

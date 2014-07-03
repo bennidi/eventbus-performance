@@ -3,11 +3,7 @@ package net.engio.common.events;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
-* Created with IntelliJ IDEA.
-* User: benni
-* Date: 11/3/12
-* Time: 5:24 PM
-* To change this template use File | Settings | File Templates.
+ * A simple event that can keep track of how many times it was handled by a certain listener
 */
 public class TestEvent {
 
