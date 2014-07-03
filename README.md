@@ -8,7 +8,7 @@ without any restrictions. The results can be found in the projects `result` fold
 
 I wrote this blog [post|http://codeblock.engio.net/37/] comparing different event bus implementations and showing some of the
 results of the old performance benchmark (which can be found in `src/old` (<-surprise)). The new benchmarks do not yet include the formerly
-benchmarked implementations. I would enjoy seeing other people create and add benchmarks of other bus implementations
+benchmarked implementations. I would enjoy seeing other people create and add benchmarks of other bus implementations.
 
 
 # Benchmarks
@@ -44,8 +44,8 @@ benchmarked implementations. I would enjoy seeing other people create and add be
 
 | Event Bus | Publication TestEvent | Publication SubTestEvent | Subscription | Unsubscription |
 | ------------- |:-------------:|:-----:|:-----:|:-----:|
-| Mbassador | ~1750 ms | ~3500 ms  | ~5 ms  | ~3 ms |
-| Guava     | ~7000 ms | ~14000 ms | ~27 ms | ~30 ms |
+| Mbassador 1.1.10 | ~1750 ms | ~3500 ms  | ~5 ms  | ~3 ms |
+| Guava     17.0 | ~7000 ms | ~14000 ms | ~27 ms | ~30 ms |
 
 + *Publication TestEvent*: Deliver 1000 (batch size) messages (TestEvent) to 2000 handlers
 + *Publication TestEvent*: Deliver 1000 (batch size) messages (SubTestEvent) to 4000 handlers
