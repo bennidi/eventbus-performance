@@ -13,11 +13,7 @@ import net.engio.mbassy.bus.config.BusConfiguration;
 import org.bushe.swing.event.annotation.AnnotationProcessor;
 
 /**
- * Created with IntelliJ IDEA.
- * User: benni
- * Date: 11/9/12
- * Time: 9:48 PM
- * To change this template use File | Settings | File Templates.
+ * Adapter interface to plug in different event bus systems
  */
 public interface IEventBus {
 
@@ -70,7 +66,7 @@ public interface IEventBus {
 
     public class MbassadorAdapter implements IEventBus {
 
-        private MBassador delegate = new MBassador(BusConfiguration.Default());
+        private MBassador delegate = new MBassador(BusConfiguration.SyncAsync());
 
         @Override
         public void publish(Object event) {
