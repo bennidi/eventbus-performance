@@ -1,4 +1,4 @@
-package net.engio;
+ulpackage net.engio;
 
 import net.engio.common.listeners.AllEventsListener;
 import net.engio.common.listeners.ListenerFactory;
@@ -33,7 +33,7 @@ public class Benchmarks {
                                 SubTestEventListener.class))
                 .setProperty(BatchSize, 1000)
                 .setProperty(Publishers, 30)
-                .setProperty(BatchesPerPublisher, 10)
+                .setProperty(BatchesPerPublisher, 100)
                 .setProperty(Subscribers, 3)
                 .setProperty(SubscriberDelay, 30L)
                 .setProperty(Unsubscribers, 3)
