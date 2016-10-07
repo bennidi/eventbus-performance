@@ -50,31 +50,13 @@
         <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
-            <version>17.0</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.google.code</groupId>
-            <artifactId>simplebus</artifactId>
-            <version>1.2</version>
+            <version>19.0</version>
         </dependency>
 
         <dependency>
             <groupId>net.engio</groupId>
             <artifactId>mbassador</artifactId>
-            <version>1.2.0</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.bushe</groupId>
-            <artifactId>eventbus</artifactId>
-            <version>1.4</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.mycila</groupId>
-            <artifactId>mycila-pubsub</artifactId>
-            <version>5.0.ga</version>
+            <version>1.3.0</version>
         </dependency>
 
 

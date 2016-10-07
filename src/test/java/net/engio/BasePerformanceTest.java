@@ -1,8 +1,8 @@
 package net.engio;
 
 import net.engio.common.IEventBus;
-import net.engio.common.events.SubTestEvent;
-import net.engio.common.events.TestEvent;
+import net.engio.common.events.Event;
+import net.engio.common.events.SubEvent;
 import net.engio.common.listeners.ListenerFactory;
 import net.engio.common.listeners.ListenerManager;
 import net.engio.pips.data.DataCollector;
@@ -31,7 +31,7 @@ import java.util.concurrent.TimeUnit;
 public abstract class BasePerformanceTest {
 
     // change this to your local system settings (this is the directory of the github repository root)
-    private static final String ProjectDir = "/home/bennidi/Development/workspaces/mbassador/eventbus-performance/";
+    private static final String ProjectDir = "/ext/dev/workspace/eventbus-performance/";
 
 
     // for each event bus implementation there will be a corresponding wrapper and subclass of this test
@@ -39,30 +39,63 @@ public abstract class BasePerformanceTest {
 
 
     @Test
-    public void benchmarkScenario1() throws Exception {
+    public void ReadWriteVeryHighConcurrency() throws Exception {
+        runBenchmark(Benchmarks.ReadWriteVeryHighConcurrency());
+    }
+
+    @Test
+    public void ReadWriteHighConcurrency() throws Exception {
           runBenchmark(Benchmarks.ReadWriteHighConcurrency());
     }
 
     @Test
-    public void benchmarkScenario2() throws Exception {
+    public void ReadWriteLowConcurrency() throws Exception {
         runBenchmark(Benchmarks.ReadWriteLowConcurrency());
     }
 
     @Test
-    public void benchmarkScenario3() throws Exception {
-        runBenchmark(Benchmarks.HighReadConcurrency());
+    public void HighReadConcurrency() throws Exception {
+        runBenchmark(Benchmarks.ReadOnlyHighConcurrency());
     }
 
     void runBenchmark(final Benchmark benchmark) throws Exception {
         final IEventBus bus = getBus();
         benchmark.setProperty("Eventbus", bus.getName());
         final ListenerManager listenerManager = new ListenerManager(benchmark.<ListenerFactory>getProperty(Benchmarks.Listeners));
-        final int batchSize = benchmark.getProperty(Benchmarks.BatchSize);
+        final int batchSize = benchmark.getProperty(Benchmarks.EventsPerPublisher);
+        final int publishersCnt = benchmark.getProperty(Benchmarks.Publishers);
+        final int subscribersCnt = benchmark.getProperty(Benchmarks.Subscribers);
+        final int unsubscribersCnt = benchmark.getProperty(Benchmarks.Unsubscribers);
+
+        Workload initializer = new Workload("Initializer")
+                .setParallelTasks(1)
+                .starts().immediately()
+                .duration().repetitions(1)
+                .setITaskFactory(new ITaskFactory() {
+                    @Override
+                    public ITask create(ExecutionContext context) {
+                        return new ITask() {
+                            @Override
+                            public void run(ExecutionContext context) throws Exception {
+                                List<ListenerManager.ListenerWrapper> unsubscribed = listenerManager.getUnsubscribed(batchSize);
+                                for (ListenerManager.ListenerWrapper wrapper : unsubscribed) {
+                                    bus.subscribe(wrapper.getListener());
+                                    wrapper.subscribe();
+                                }
+                                for (int round=0; round < 200000;round++){
+                                    bus.publish(new Event());
+                                    bus.publish(new SubEvent());
+                                }
+                            }
+                        };
+                    }
+                });
+
 
         Workload publisher = new Workload("Publisher")
-                .setParallelTasks((Integer) benchmark.getProperty(Benchmarks.Publishers))
-                .starts().after(2, TimeUnit.SECONDS)
-                .duration().repetitions((Integer) benchmark.getProperty(Benchmarks.BatchesPerPublisher))
+                .setParallelTasks(publishersCnt)
+                .starts().after(initializer)
+                .duration().repetitions((Integer) benchmark.getProperty(Benchmarks.RoundsPerPublisher))
                 .handle(ExecutionEvent.WorkloadCompletion, new ExecutionHandler() {
                     @Override
                     public void handle(ExecutionContext context) {
@@ -93,18 +126,18 @@ public abstract class BasePerformanceTest {
                             @Override
                             public void run(ExecutionContext context) throws Exception {
                                 timeTestEvent.begin();
-                                TestEvent event = null;
+                                Event event = null;
                                 for (int i = 0; i < batchSize; i++) {
-                                    event = new TestEvent();
+                                    event = new Event();
                                     bus.publish(event);
                                 }
                                 timeTestEvent.end();
                                 handlersTestEvent.receive(event.getCount()); // store handler invocations
 
                                 timeSubTestEvent.begin();
-                                SubTestEvent subEvent = null;
+                                SubEvent subEvent = null;
                                 for (int i = 0; i < batchSize; i++) {
-                                    subEvent = new SubTestEvent();
+                                    subEvent = new SubEvent();
                                     bus.publish(subEvent);
                                 }
                                 timeSubTestEvent.end();
@@ -116,8 +149,8 @@ public abstract class BasePerformanceTest {
 
 
         Workload subscriber = new Workload("Subscriber")
-                .setParallelTasks((Integer) benchmark.getProperty(Benchmarks.Subscribers))
-                .starts().immediately()
+                .setParallelTasks(subscribersCnt)
+                .starts().after(initializer)
                 .duration().depends(publisher)
                 .setDelay((Long) benchmark.getProperty(Benchmarks.SubscriberDelay))
                 .setITaskFactory(new ITaskFactory() {
@@ -140,8 +173,8 @@ public abstract class BasePerformanceTest {
                 });
 
         Workload unsubscriber = new Workload("Unsubscriber")
-                .setParallelTasks((Integer) benchmark.getProperty(Benchmarks.Unsubscribers))
-                .starts().after(5, TimeUnit.SECONDS)
+                .setParallelTasks(unsubscribersCnt)
+                .starts().after(initializer)
                 .duration().depends(publisher)
                 .setDelay((Long) benchmark.getProperty(Benchmarks.UnsubscriberDelay))
                 .setITaskFactory(new ITaskFactory() {
@@ -163,7 +196,7 @@ public abstract class BasePerformanceTest {
                         };
                     }
                 });
-        benchmark.addWorkload(publisher, subscriber, unsubscriber)
+        benchmark.addWorkload(initializer, publisher, subscriber, unsubscriber)
                 .setBasePath(ProjectDir + "results");
 
 
@@ -171,55 +204,61 @@ public abstract class BasePerformanceTest {
         new Laboratory().run(benchmark);
 
         // collapse collectors into a a single collector (values with same timestamps are aggregated into averages)
-        DataCollector publicationTestEventAvg = new DataCollector("Publication TestEvent(AVG)");
+        DataCollector publicationTestEventAvg = new DataCollector("Publish 1000 x Event");
         new TimeBasedAggregator()
                 .consume(benchmark.getCollectors("publish:testevent"))
                 .fold(new Average())
                 .feed(publicationTestEventAvg);
-        DataCollector publicationSubTestEventAvg = new DataCollector("Publication SubTestEvent(AVG)");
+        DataCollector publicationSubTestEventAvg = new DataCollector("Publish 1000 x SubEvent");
         new TimeBasedAggregator()
                 .consume(benchmark.getCollectors("publish:subtestevent"))
                 .fold(new Average())
                 .feed(publicationSubTestEventAvg);
-        DataCollector subscriptionAvg = new DataCollector("Subscription(AVG)");
+        DataCollector subscriptionAvg = new DataCollector("Subscribe ~200 listeners");
         new TimeBasedAggregator()
                 .consume(benchmark.getCollectors("subscribe"))
                 .fold(new Average())
                 .feed(new SlidingAggregator(new IDataFilter.ItemCountBased(20), new Average()).add(subscriptionAvg));
-        DataCollector unsubscriptionAvg = new DataCollector("Unsubscription(AVG)");
+        DataCollector unsubscriptionAvg = new DataCollector("Unsubscribe ~200 listeners");
         new TimeBasedAggregator()
                 .consume(benchmark.getCollectors("unsubscribe"))
                 .fold(new Average())
                 .feed(new SlidingAggregator(new IDataFilter.ItemCountBased(20), new Average()).add(unsubscriptionAvg));
-        DataCollector handlersAvg = new DataCollector("Handlers TestEvent(AVG)");
+        DataCollector handlersAvg = new DataCollector("Handlers for Event");
         new TimeBasedAggregator()
                 .consume(benchmark.getCollectors("handlers:testevent"))
                 .fold(new Average())
                 .feed(handlersAvg);
-        DataCollector handlersSubTestEventAvg = new DataCollector("Handlers SubTestEvent (AVG)");
+        DataCollector handlersSubTestEventAvg = new DataCollector("Handlers for SubEvent");
         new TimeBasedAggregator()
                 .consume(benchmark.getCollectors("handlers:subtestevent"))
                 .fold(new Average())
                 .feed(handlersSubTestEventAvg);
 
+        int threadCount = publishersCnt + subscribersCnt + unsubscribersCnt;
+        String title = benchmark.getTitle() + " = " + threadCount + " threads (" +
+                publishersCnt + " publishers, " +
+                subscribersCnt + " subscribers, " +
+                unsubscribersCnt + " unsubscribers)";
 
-        benchmark.generateReports(new CSVFileExporter(), new ChartGenerator()
-                .setTitle("Execution times")
+        ChartGenerator chartgen = new ChartGenerator()
+                .setTitle(title)
                 .setXAxisLabel("time")
                 .setPixelPerDatapoint(5)
-                .draw(new SeriesGroup("Execution time of publications (ms)")
-                        .addCollector(publicationTestEventAvg)
-                                //.addCollectors(benchmark.getCollectorManager().getCollectors("publish:testevent", 3))
-                        .addCollector(publicationSubTestEventAvg)
-                        //.addCollectors(benchmark.getCollectorManager().getCollectors("publish:subtestevent", 3))
-                )
-                .draw(new SeriesGroup("Execution time of subscriptions (ms)")
-                        .addCollector(unsubscriptionAvg)
-                        .addCollector(subscriptionAvg))
-                .draw(new SeriesGroup("Number of handlers invoked")
+                .draw(new SeriesGroup("Publication (ms)")
+                                .addCollector(publicationTestEventAvg)
+                                .addCollector(publicationSubTestEventAvg))
+                .draw(new SeriesGroup("Registered handlers")
                         .setYAxisOrientation(SeriesGroup.Orientation.Right)
                         .addCollector(handlersAvg)
-                        .addCollector(handlersSubTestEventAvg)));
+                        .addCollector(handlersSubTestEventAvg));
+            if(subscribersCnt > 0){
+                chartgen.draw(new SeriesGroup("Subscriptions (ms)")
+                        .addCollector(unsubscriptionAvg)
+                        .addCollector(subscriptionAvg));
+            }
+
+        benchmark.generateReports(new CSVFileExporter(), chartgen);
 
     }
 

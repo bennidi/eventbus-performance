@@ -1,16 +1,6 @@
 package net.engio.common;
 
-import com.adamtaft.eb.EventBusService;
-import com.mycila.event.Dispatcher;
-import com.mycila.event.Dispatchers;
-import com.mycila.event.Topic;
-import com.mycila.event.Topics;
-import net.engio.common.events.SubTestEvent;
-import net.engio.common.events.TestEvent;
-import net.engio.common.listeners.AllEventsListener;
 import net.engio.mbassy.bus.MBassador;
-import net.engio.mbassy.bus.config.BusConfiguration;
-import org.bushe.swing.event.annotation.AnnotationProcessor;
 
 /**
  * Adapter interface to plug in different event bus systems
@@ -66,7 +56,7 @@ public interface IEventBus {
 
     public class MbassadorAdapter implements IEventBus {
 
-        private MBassador delegate = new MBassador(BusConfiguration.SyncAsync());
+        private MBassador delegate = new MBassador();
 
         @Override
         public void publish(Object event) {
@@ -91,99 +81,6 @@ public interface IEventBus {
         @Override
         public String getName() {
             return "Mbassador";
-        }
-    }
-
-
-    public class SimpleBusAdapter implements IEventBus {
-
-        @Override
-        public void publish(Object event) {
-            EventBusService.publish(event);
-        }
-
-        @Override
-        public void subscribe(Object listener) {
-            EventBusService.subscribe(listener);
-        }
-
-        @Override
-        public boolean unsubscribe(Object listener) {
-            EventBusService.unsubscribe(listener);
-            return true; // TODO
-        }
-
-        @Override
-        public boolean hasPending() {
-            return EventBusService.hasPendingEvents();
-        }
-
-        @Override
-        public String getName() {
-            return "Simplebus";
-        }
-    }
-
-
-    public class EventBusAdapter implements IEventBus {
-
-        @Override
-        public void publish(Object event) {
-            org.bushe.swing.event.EventBus.publish(event);
-        }
-
-        @Override
-        public void subscribe(Object listener) {
-            AnnotationProcessor.process(listener);
-        }
-
-        @Override
-        public boolean unsubscribe(Object listener) {
-            AnnotationProcessor.unprocess(listener);
-            return true; //TODO
-        }
-
-        @Override
-        public boolean hasPending() {
-           return false;
-        }
-
-        @Override
-        public String getName() {
-            return "Eventbus";
-        }
-
-
-    }
-
-    public class MycilaAdapter implements IEventBus {
-
-        private Dispatcher bus = Dispatchers.synchronousSafe();
-
-        @Override
-        public void publish(Object event) {
-            bus.publish(Topic.topic("any"), event);
-        }
-
-        @Override
-        public void subscribe(Object listener){
-            bus.subscribe(Topics.any(),SubTestEvent.class, AllEventsListener.Mycila.subTestEventSubscriber());
-            bus.subscribe(Topics.any(),TestEvent.class, AllEventsListener.Mycila.testEventSubscriber());
-        }
-
-        @Override
-        public boolean unsubscribe(Object listener) {
-            return false;
-        }
-
-        @Override
-        public boolean hasPending() {
-            return false;  //To change body of implemented methods use File | Settings | File Templates.
-        }
-
-        @Override
-        public String getName() {
-            return "Mycila";
         }
     }
 

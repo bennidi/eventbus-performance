@@ -5,7 +5,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 /**
  * A simple event that can keep track of how many times it was handled by a certain listener
 */
-public class TestEvent {
+public class Event {
 
     private AtomicInteger counter = new AtomicInteger();
 
