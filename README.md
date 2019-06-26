@@ -52,8 +52,7 @@ Continuously unsubscribes new listeners from the same predefined set of listener
   
   
 ### Execution times Mbassador 1.3.0
-
-![Execution times mbassador](/results/ReadWriteHighConcurrency/mbassador-1.3.0/chart.jpg?raw=true , "mbassador")
+![Execution times Guava](/results/ReadWriteHighConcurrency/mbassador-1.3.0/chart.jpg?raw=true, "guava")
   
   
 ### Execution times Guava 19.0
@@ -76,7 +75,7 @@ Continuously unsubscribes new listeners from the same predefined set of listener
 
 ### Execution times Mbassador 1.3.0
 
-![Chart of execution times for mbassador](/results/ReadWriteLowConcurrency/mbassador-1.3.0/chart.jpg?raw=true , "mbassador")
+![Chart of execution times for mbassador](/results/ReadWriteLowConcurrency/mbassador-1.3.0/chart.jpg?raw=true, "mbassador")
 
 
 ### Execution times for Guava 19.0
@@ -99,7 +98,7 @@ Continuously unsubscribes new listeners from the same predefined set of listener
 
 ### Execution times Mbassador 1.3.0
 
-![Chart of execution times for mbassador](/results/ReadOnlyHighConcurrency/mbassador-1.3.0/chart.jpg?raw=true , "mbassador")
+![Chart of execution times for mbassador](/results/ReadOnlyHighConcurrency/mbassador-1.3.0/chart.jpg?raw=true, "mbassador")
   
   
 ### Execution times Guava 19.0
