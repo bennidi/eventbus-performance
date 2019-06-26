@@ -1,12 +1,17 @@
 eventbus-performance
 ====================
 
-This is a collection of benchmarks for event-bus libraries that implement the publish/subscribe pattern.
-Each benchmark is defined in terms of an abstraction over the actual event-bus implementations that are being benchmarks. For each benchmark run, a graphical and textual report is generated.
+A collection of benchmarks for event-bus libraries in Java space used for implementations of pub/sub pattern.
+A benchmark runs a specified workload against a unified interface that implements an adapter of the actual event-bus implementations. Benchmark contents (workloads) are described below.
+For each run of a benchmark you can find a plot of the runtime performance of each library and a textual comparison of the avg. performances.
 
-Currently the only candidates are Guava EventBus and MBassador. This is because including the other available libraries (see earlier versions of this repository) would have required a more complex EventBus abstraction in the tests. In previous versions they had been included but their performance was so poor in comparison to Guava and MBassador that continued support of their interface seemed not worth the effort. The results of the benchmarks of the most recent versions is illustrated below. Older versions can be found in the projects `result` folder. For a discussion of the results, see the end of this README.
 
-> Disclosure: I am the author of MBassador. The motivation to design these benchmarks was to test the performance wins that MBassador has over other libraries. 
+>> Please note: Currently the only candidates are Guava EventBus and MBassador. 
+This is because including the other available libraries (see earlier versions of this repository) would have required a more complex EventBus abstraction in the tests. In previous versions they had been included but their performance was so poor in comparison to Guava and MBassador that continued support of their interface seemed not worth the effort. They also did not support polymoprphic event delivery such that results were not exactly comparable.
+
+The results of the benchmarks of the most recent versions is illustrated below. Older versions can be found in the projects `result` folder. For a discussion of the results, see the end of this README.
+
+> Disclosure: I am the author of MBassador. The motivation to design these benchmarks was to verify and illustrate the performance wins that MBassador has over other libraries. 
 
 
 # Benchmarks
@@ -15,16 +20,22 @@ Each benchmark consists of a number of workloads. Each workload defines a runnab
 
 Depending on the scenario, different numbers of parallel tasks are executed to test different degrees of concurrency. Results of different task executions are collected during benchmark execution and a line graph as well as a textual report is generated after completion. The graphical representation of execution times allows for an in-depth comparison of Guava and MBassador.
 
-> Note: All benchmarks measure synchronous dispatch and synchronous handlers. Benchmarking asynchronous handler invocation or event dispatch would require a different set of test scenarios.
+> Note: All benchmarks measure synchronous dispatch and synchronous handlers, meaning that the actual handler invocation and execution (essentially a Noop, JIT optimzations prevented!) is measured. Benchmarking asynchronous handler invocation or event dispatch would require a different set of test scenarios but the underlying performance characteristics of the concurrency handling in each library are very likely to yield quite similar results for async scenario.
 
 ## Workload: Initializer
-creates the initial amount of event listeners and subscribes them to the bus. Publishes ~half a million events to warm up the JVM.
+Creates the initial amount of event listeners and subscribes them to the bus. Publishes around half a million events as a warm up for the JVM.
+
 ## Workload: Publisher
-publishes two 1000 instances of Event and 1000 of SubEvent to the bus. Each publisher is run multiple times according to workload configuration. This equals in **2 mio. handler invocations** for Event and 4 mio. handler invocations for SubEvent **per round**.
+
+Publishes batches of **1000 events (type=Event)** and **1000 events (type=SubEvent)**. Each publisher is run multiple times according to workload configuration. This equals in **2 mio. handler invocations** (type=Event) and 4 mio. handler invocations for SubEvent **per round**.
+
 ## Workload: Subscriber
-continuously subscribes new listeners from a predefined set of listeners to the bus
+
+Continuously subscribes new listeners from a predefined set of listeners to the bus
+
 ## Workload: Unsubscriber
-continuously unsubscribes new listeners from the same predefined set of listeners to the bus. 
+
+Continuously unsubscribes new listeners from the same predefined set of listeners to the bus. 
 > Note: Listeners that have formerly been subscribed by "Subscriber" are available to the "Unsubscriber" threads for subsequent unsubcription.
 
 ## Read Write High Concurrency
@@ -39,12 +50,13 @@ continuously unsubscribes new listeners from the same predefined set of listener
 | Mbassador 1.3.0 | ~650 ms | ~1300 ms  | ~1 ms  | ~1 ms |
 | Guava     19.0 | ~1400 ms | ~4000 ms | ~20 ms | ~70 ms |  
   
- > Visualization of execution times for Mbassador 1.3.0
+  
+> Visualization of execution times for Mbassador 1.3.0
 ![Chart of execution times for mbassador](/results/ReadWriteHighConcurrency/mbassador-1.3.0/chart.jpg?raw=true , "mbassador")
   
   
   
- > Visualization of execution times for Guava 19.0
+> Visualization of execution times for Guava 19.0
 ![Chart of execution times for Guava](/results/ReadWriteHighConcurrency/guava-19.0/chart.jpg?raw=true, "guava")
   
 
@@ -60,12 +72,13 @@ continuously unsubscribes new listeners from the same predefined set of listener
   | Mbassador 1.3.0 | ~220 ms | ~450 ms  | ~.5 ms  | ~.5 ms |
   | Guava     19.0 | ~800 ms | ~2200 ms | ~7 ms | ~49 ms |
   
- > Visualization of execution times for Mbassador 1.3.0
+
+> Visualization of execution times for Mbassador 1.3.0
 ![Chart of execution times for mbassador](/results/ReadWriteLowConcurrency/mbassador-1.3.0/chart.jpg?raw=true , "mbassador")
 
 
 
- > Visualization of execution times for Guava 19.0
+> Visualization of execution times for Guava 19.0
 ![Chart of execution times for Guava](/results/ReadWriteLowConcurrency/guava-19.0/chart.jpg?raw=true, "guava")
    
 
@@ -83,12 +96,12 @@ continuously unsubscribes new listeners from the same predefined set of listener
 | Mbassador 1.3.0 | ~175 ms | ~350 ms  | n.a.  | n.a. |
 | Guava     19.0 | ~350 ms | ~1100 ms | n.a. | n.a. |
 
- > Visualization of execution times for Mbassador 1.3.0
+
+> Visualization of execution times for Mbassador 1.3.0
 ![Chart of execution times for mbassador](/results/ReadOnlyHighConcurrency/mbassador-1.3.0/chart.jpg?raw=true , "mbassador")
   
   
-  
- > Visualization of execution times for Guava 19.0
+> Visualization of execution times for Guava 19.0
 ![Chart of execution times for Guava](/results/ReadOnlyHighConcurrency/guava-19.0/chart.jpg?raw=true, "guava")
   
 
@@ -98,19 +111,18 @@ continuously unsubscribes new listeners from the same predefined set of listener
 
 Both event bus implementations show quite consistent results in all scenarios. Execution times exhibit quite some variance distributed equally around a stable average - both for read (publish) and write(subscribe/unsubscribe) operations. This is expectable considering that the thread scheduling has a significant influence on results.
 
-
- The throughput of both libraries is as follows:
- Without writes **Guava handles ~5.700 invocations per ms** for Event and ~3.600 invocations per ms for SubEvent. With higher write concurrency this drops to ~1.400 invocations per ms for Event and ~1.000 invocations per ms for SubEvent.
+The throughput of both libraries is as follows:
+Without concurrent modifications to the set of listeners **Guava handles ~5.700 invocations per ms** for Event and ~3.600 invocations per ms for SubEvent. With higher write concurrency this drops to ~1.400 invocations per ms for Event and ~1.000 invocations per ms for SubEvent.
  
-MBassadors numbers are significantly better. Without writes **MBassador handles ~11.500 invocations per ms** for Event and ~11.500 invocations per ms for SubEvent. With higher write concurrency this drops to ~3.000 invocations per ms for Event and ~3.000 invocations per ms for SubEvent.
+MBassadors numbers are significantly better. Without concurrent writes **MBassador handles ~11.500 invocations per ms** for Event and ~11.500 invocations per ms for SubEvent. With higher write concurrency this drops to ~3.000 invocations per ms for Event and ~3.000 invocations per ms for SubEvent.
 
- Both event bus suffer from slowdown incurred by concurrent write access. Guava experiences this slowdown even in scenarios with only one concurrent writer, whereas MBassador shows a real slowdown only when multiple writers come into play.
+Both event bus suffer from slowdown incurred by concurrent write access. Guava experiences this slowdown even in scenarios with only one concurrent writer, whereas MBassador shows a real slowdown only when multiple writers come into play.
 
 Guava also shows a slowdown in polymorphic handler invocation that is disproportionate to the increase number of matching handlers. There are always twice as many handlers for SubEvent as for Event but execution times for SubEvent is consistently 3 times higher. In contrast, te ratio for MBassador is consistently 1:2
 
 For Guava, unsubscription (removal of listeners) is considerably slower (~5 times) than subscription (addition of listeners). Possibly this is a leaking characteristic of the underlying data structure (optimized for insertion instead of removal). MBassador shows no difference between insertion or removal.
 
-> Note: Better performance results of MBassador are not due to lack of features. In fact, MBassador offers much more features compared to Guava.
+> Note: Better performance results of MBassador are not due to lack of features. In fact, MBassador offers more features compared to Guava.
 
 
 
