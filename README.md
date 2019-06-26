@@ -51,13 +51,14 @@ Continuously unsubscribes new listeners from the same predefined set of listener
 | Guava     19.0 | ~1400 ms | ~4000 ms | ~20 ms | ~70 ms |  
   
   
-> Visualization of execution times for Mbassador 1.3.0
-![Chart of execution times for mbassador](/results/ReadWriteHighConcurrency/mbassador-1.3.0/chart.jpg?raw=true , "mbassador")
+### Execution times Mbassador 1.3.0
+
+![Execution times mbassador](/results/ReadWriteHighConcurrency/mbassador-1.3.0/chart.jpg?raw=true , "mbassador")
   
   
-  
-> Visualization of execution times for Guava 19.0
-![Chart of execution times for Guava](/results/ReadWriteHighConcurrency/guava-19.0/chart.jpg?raw=true, "guava")
+### Execution times Guava 19.0
+
+![Execution times Guava](/results/ReadWriteHighConcurrency/guava-19.0/chart.jpg?raw=true, "guava")
   
 
 ## Read Write Low Concurrency
@@ -73,16 +74,15 @@ Continuously unsubscribes new listeners from the same predefined set of listener
   | Guava     19.0 | ~800 ms | ~2200 ms | ~7 ms | ~49 ms |
   
 
-> Visualization of execution times for Mbassador 1.3.0
+### Execution times Mbassador 1.3.0
+
 ![Chart of execution times for mbassador](/results/ReadWriteLowConcurrency/mbassador-1.3.0/chart.jpg?raw=true , "mbassador")
 
 
+### Execution times for Guava 19.0
 
-> Visualization of execution times for Guava 19.0
 ![Chart of execution times for Guava](/results/ReadWriteLowConcurrency/guava-19.0/chart.jpg?raw=true, "guava")
    
-
-
 
 ## Read Only High Concurrency
 
@@ -97,17 +97,19 @@ Continuously unsubscribes new listeners from the same predefined set of listener
 | Guava     19.0 | ~350 ms | ~1100 ms | n.a. | n.a. |
 
 
-> Visualization of execution times for Mbassador 1.3.0
+### Execution times Mbassador 1.3.0
+
 ![Chart of execution times for mbassador](/results/ReadOnlyHighConcurrency/mbassador-1.3.0/chart.jpg?raw=true , "mbassador")
   
   
-> Visualization of execution times for Guava 19.0
+### Execution times Guava 19.0
+
 ![Chart of execution times for Guava](/results/ReadOnlyHighConcurrency/guava-19.0/chart.jpg?raw=true, "guava")
   
 
 
 
-##Discussion
+## Discussion
 
 Both event bus implementations show quite consistent results in all scenarios. Execution times exhibit quite some variance distributed equally around a stable average - both for read (publish) and write(subscribe/unsubscribe) operations. This is expectable considering that the thread scheduling has a significant influence on results.
 
